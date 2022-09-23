@@ -10,6 +10,8 @@ export const createUser = async (req, res) => {
       ...req.body,
       password: hash,
       isAdmin: false,
+      booksOwned: [],
+      messages: [],
     });
     await newUser.save();
     res.status(201).send('New User is created');
