@@ -28,7 +28,22 @@ const userSchema = new mongoose.Schema(
     ],
     messages: [
       {
-        type: String,
+        from: {
+          type: String,
+          required: true,
+        },
+        date: {
+          type: String,
+          required: true,
+        },
+        topic: {
+          type: String,
+          required: true,
+        },
+        content: {
+          type: String,
+          required: true,
+        },
       },
     ],
   },

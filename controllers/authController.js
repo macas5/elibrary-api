@@ -52,3 +52,15 @@ export const loginUser = async (req, res) => {
     res.status(405).send(error);
   }
 };
+
+export const logoutUser = async (req, res) => {
+  try {
+    res
+      .cookie('session_token', '', {
+        httpOnly: true,
+      })
+      .send('Cookie deleted');
+  } catch (error) {
+    console.error(error);
+  }
+};

@@ -1,5 +1,9 @@
 import express from 'express';
-import { createUser, loginUser } from '../controllers/authController.js';
+import {
+  createUser,
+  loginUser,
+  logoutUser,
+} from '../controllers/authController.js';
 import {
   getAllUsers,
   getOwnUser,
@@ -17,6 +21,8 @@ const router = express.Router();
 router.post('/login', loginUser);
 
 router.post('/register', createUser);
+
+router.post('/logout', logoutUser);
 
 router.get('/get/:id', sessionValidation, verifySessionTokenUser, getUserById);
 
