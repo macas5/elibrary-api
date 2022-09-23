@@ -5,6 +5,7 @@ import cors from 'cors';
 
 import connectionToDb from './utils/connectToDb.js';
 import userRoutes from './routes/userRoutes.js';
+import bookRoutes from './routes/bookRoutes.js';
 
 const app = express();
 const port = 3001;
@@ -15,6 +16,7 @@ app.use(cookieParser());
 app.use(cors());
 
 app.use('/user', userRoutes);
+app.use('/book', bookRoutes);
 
 app.listen(port, () => {
   connectionToDb();
