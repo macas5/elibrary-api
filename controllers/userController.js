@@ -10,6 +10,17 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
+export const getUserById = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.params.id);
+    const { password, ...remainingUserData } = user._doc;
+    res.status(200).json(remainingUserData);
+  } catch (error) {
+    res.status(405).send(error);
+    console.error(error);
+  }
+};
+
 export const updateUser = async (req, res) => {
   try {
     const user = await userModel.findByIdAndUpdate(
