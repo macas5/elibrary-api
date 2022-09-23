@@ -5,7 +5,10 @@ import {
   getUserById,
   updateUser,
 } from '../controllers/userController.js';
-import { verifySessionTokenUser } from '../utils/authCheck.js';
+import {
+  verifySessionTokenAdmin,
+  verifySessionTokenUser,
+} from '../utils/authCheck.js';
 import sessionValidation from '../utils/sessionValidation.js';
 
 const router = express.Router();
@@ -23,7 +26,6 @@ router.put(
   updateUser
 );
 
-//dev routes
-router.get('/users', getAllUsers);
+router.get('/users', sessionValidation, verifySessionTokenAdmin, getAllUsers);
 
 export default router;
