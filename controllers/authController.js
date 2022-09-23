@@ -1,11 +1,11 @@
 import bcrypt from 'bcrypt';
 import userModel from '../models/userModel.js';
 import jwt from 'jsonwebtoken';
+import hashPassword from '../utils/hashPassword.js';
 
 export const createUser = async (req, res) => {
   try {
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(req.body.password, salt);
+    const hash = hashPassword(req.body.password);
     const newUser = new userModel({
       ...req.body,
       password: hash,
