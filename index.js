@@ -13,7 +13,7 @@ const port = 3001;
 dotenv.config();
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
 app.use('/user', userRoutes);
 app.use('/book', bookRoutes);

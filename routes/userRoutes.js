@@ -2,6 +2,7 @@ import express from 'express';
 import { createUser, loginUser } from '../controllers/authController.js';
 import {
   getAllUsers,
+  getOwnUser,
   getUserById,
   updateUser,
 } from '../controllers/userController.js';
@@ -18,6 +19,8 @@ router.get('/login', loginUser);
 router.post('/register', createUser);
 
 router.get('/get/:id', sessionValidation, verifySessionTokenUser, getUserById);
+
+router.get('/getown', sessionValidation, getOwnUser);
 
 router.put(
   '/update/:id',

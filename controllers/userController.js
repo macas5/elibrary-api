@@ -21,6 +21,17 @@ export const getUserById = async (req, res) => {
   }
 };
 
+export const getOwnUser = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.user.id);
+    const { password, ...remainingUserData } = user._doc;
+    res.status(200).json(remainingUserData);
+  } catch (error) {
+    res.status(405).send(error);
+    console.error(error);
+  }
+};
+
 export const updateUser = async (req, res) => {
   try {
     const user = await userModel.findByIdAndUpdate(

@@ -23,12 +23,12 @@ const bookSchema = new mongoose.Schema(
       type: String,
     },
     isReleased: {
-      type: Boolean,
-      default: true,
+      type: String,
+      default: 'true',
     },
     isReadableOnline: {
-      type: Boolean,
-      default: false,
+      type: String,
+      default: 'false',
     },
   },
   {
