@@ -14,7 +14,7 @@ import sessionValidation from '../utils/sessionValidation.js';
 
 const router = express.Router();
 
-router.get('/login', loginUser);
+router.post('/login', loginUser);
 
 router.post('/register', createUser);
 
