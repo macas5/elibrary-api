@@ -1,4 +1,5 @@
 import userModel from '../models/userModel.js';
+import bcrypt from 'bcrypt';
 import hashPassword from '../utils/hashPassword.js';
 
 export const getAllUsers = async (req, res) => {
@@ -33,14 +34,23 @@ export const getOwnUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
+  const { updatedUserData } = req.body;
+  const userFromDb = await userModel.findById(req.params.id);
+  // console.log(req.user);
+
   try {
+    console.log(updatedUserData);
+    const isPasswordCorrect = updatedUserData.currPassword
+      ? bcrypt.compareSync(updatedUserData.currPassword, userFromDb.password)
+      : null;
+    if (isPasswordCorrect === false) throw 'Invalid current password';
+
+    const newPassword = isPasswordCorrect ? updatedUserData.newPassword : null;
     const user = await userModel.findByIdAndUpdate(
       req.params.id,
       {
-        $set: req.body,
-        ...(req.body.password
-          ? { password: hashPassword(req.body.password) }
-          : {}),
+        $set: updatedUserData,
+        ...(newPassword ? { password: hashPassword(newPassword) } : {}),
         ...(!req.user.isAdmin ? { isAdmin: false } : {}),
         ...(Object.keys(req.body).includes('isAdmin') && req.user.isAdmin
           ? { terminateSession: true }

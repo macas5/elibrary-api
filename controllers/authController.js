@@ -4,10 +4,11 @@ import jwt from 'jsonwebtoken';
 import hashPassword from '../utils/hashPassword.js';
 
 export const createUser = async (req, res) => {
+  const { registerData } = req.body;
   try {
-    const hash = hashPassword(req.body.password);
+    const hash = hashPassword(registerData.password);
     const newUser = new userModel({
-      ...req.body,
+      ...registerData,
       password: hash,
       isAdmin: false,
       booksOwned: [],
@@ -16,14 +17,15 @@ export const createUser = async (req, res) => {
     await newUser.save();
     res.status(201).send('New User is created');
   } catch (error) {
+    console.log(error);
     res.status(405).send(error);
-    console.error(error);
   }
 };
 
 export const loginUser = async (req, res) => {
   try {
     const user = await userModel.findOne({ username: req.body.username });
+    const { password, ...remainingData } = user._doc;
     if (!user) {
       return res.status(404).send('Wrong user or password');
     }
@@ -47,7 +49,7 @@ export const loginUser = async (req, res) => {
         httpOnly: true,
       })
       .status(201)
-      .json(token);
+      .json(remainingData);
   } catch (error) {
     res.status(405).send(error);
   }
