@@ -9,6 +9,17 @@ export const getAllBooks = async (req, res) => {
   }
 };
 
+export const getByCondition = async (req, res) => {
+  try {
+    const filteredBooks = await bookModel.find({
+      title: new RegExp(req.body.searchQuery, 'i'),
+    });
+    res.status(202).json(filteredBooks);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const createBook = async (req, res) => {
   try {
     const newBook = new bookModel({
