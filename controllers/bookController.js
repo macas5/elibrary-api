@@ -2,8 +2,20 @@ import bookModel from '../models/bookModel.js';
 
 export const getAllBooks = async (req, res) => {
   try {
-    const allBooks = await bookModel.find();
-    res.status(202).json(allBooks);
+    if (req.params.page) {
+      const allBooks = await bookModel.find();
+      const paginatedBooks = allBooks.slice(
+        req.params.page * 20,
+        req.params.page * 20 + 20
+      );
+      const pageCount = Math.ceil(allBooks.length / 20);
+      res
+        .status(202)
+        .json({ pageCount: pageCount, paginatedBooks: paginatedBooks });
+    } else {
+      const allBooks = await bookModel.find();
+      res.status(202).json(allBooks);
+    }
   } catch (error) {
     console.error(error);
   }

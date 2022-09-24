@@ -13,6 +13,8 @@ const router = express.Router();
 
 router.get('/get', getAllBooks);
 
+router.get('/get/:page', getAllBooks);
+
 router.post('/find', getByCondition);
 
 router.post('/new', sessionValidation, verifySessionTokenAdmin, createBook);
