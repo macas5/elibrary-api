@@ -36,10 +36,8 @@ export const getOwnUser = async (req, res) => {
 export const updateUser = async (req, res) => {
   const { updatedUserData } = req.body;
   const userFromDb = await userModel.findById(req.params.id);
-  // console.log(req.user);
 
   try {
-    console.log(updatedUserData);
     const isPasswordCorrect = updatedUserData.currPassword
       ? bcrypt.compareSync(updatedUserData.currPassword, userFromDb.password)
       : null;

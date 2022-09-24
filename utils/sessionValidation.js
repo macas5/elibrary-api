@@ -3,6 +3,7 @@ import userModel from '../models/userModel.js';
 
 const sessionValidation = async (req, res, next) => {
   const token = req.cookies.session_token;
+  let error = false;
 
   if (!token) {
     return res.status(401).send('User is not authorized');
@@ -10,10 +11,18 @@ const sessionValidation = async (req, res, next) => {
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
-      return res.status(404).send('Token is not valid');
+      error = true;
+      return res
+        .status(404)
+        .cookie('session_token', '', {
+          httpOnly: true,
+        })
+        .send('Token is not valid');
     }
     req.user = user;
   });
+
+  if (error) return;
 
   const user = await userModel.findById(req.user.id);
 
