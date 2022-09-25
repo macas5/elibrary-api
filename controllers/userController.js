@@ -38,16 +38,17 @@ export const updateUser = async (req, res) => {
   const userFromDb = await userModel.findById(req.params.id);
 
   try {
-    const isPasswordCorrect = updatedUserData.currPassword
-      ? bcrypt.compareSync(updatedUserData.currPassword, userFromDb.password)
-      : null;
+    const isPasswordCorrect =
+      updatedUserData && updatedUserData.currPassword
+        ? bcrypt.compareSync(updatedUserData.currPassword, userFromDb.password)
+        : null;
     if (isPasswordCorrect === false) throw 'Invalid current password';
 
     const newPassword = isPasswordCorrect ? updatedUserData.newPassword : null;
     const user = await userModel.findByIdAndUpdate(
       req.params.id,
       {
-        $set: updatedUserData,
+        $set: updatedUserData ? updatedUserData : req.body,
         ...(newPassword ? { password: hashPassword(newPassword) } : {}),
         ...(!req.user.isAdmin ? { isAdmin: false } : {}),
         ...(Object.keys(req.body).includes('isAdmin') && req.user.isAdmin
